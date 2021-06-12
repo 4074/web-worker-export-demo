@@ -12,7 +12,7 @@ function buildData(rows = 1000) {
   for (let i = 0; i < rows; i += 1) {
     const row = []
     for (let j = 0; j < 10; j += 1) {
-      row.push(i + j)
+      row.push(i + j + '哈')
     }
     result.push(row)
   }
@@ -20,13 +20,12 @@ function buildData(rows = 1000) {
 }
 
 function exportData(file: any, worker?: CreateFileWorker) {
-  console.time()
+  
   if (worker) {
     worker.onmessage = ({ data }) => {
       const { type, payload } = data
-      console.log(data)
       if (type === 'cfw:success') {
-        console.log(payload)
+        console.time()
         for (const item of payload) {
           const blob = new Blob([item.buffer])
           saveAs(blob, item.name)
@@ -53,16 +52,16 @@ function App() {
     const worker = new CreateFileWorker()
     exportData({
       type: 'xlsx',
-      name: 'example.xlsx',
+      name: '你好.xlsx',
       data: [{name: 'sheet1', data}]
     }, worker)
     exportData({
       type: 'zip',
-      name: 'example.zip',
+      name: '世界.zip',
       files: [
         {
           type: 'xlsx',
-          name: '1.xlsx',
+          name: '壹.xlsx',
           data: [{name: 'sheet1', data}, {name: 'shee2', data}]
         },
         {
